@@ -1,6 +1,5 @@
 //Packages
 const inquirer = require("inquirer");
-const rx = require("rx")
 const fs = require("fs");
 //const generateHTML = require("./generateHTML")
 const path = require("path")
@@ -13,13 +12,13 @@ const validation = (input) => {
 }
 
 //Profile Questions
-const prompts = new Rx.Subject();
+
 const managerQuestions = [
     {
         type: "input",
         message: "What is the team manager's name?",
         name: "managerName",
-        validate: validation   
+        validate: validation
     },
     {
         type: "input",
@@ -43,7 +42,7 @@ const engineerQuestions = [
         type: "input",
         message: "What is the engineer's name?",
         name: "engineerName",
-        validate: validation   
+        validate: validation
     },
     {
         type: "input",
@@ -67,7 +66,7 @@ const internQuestions = [
         type: "input",
         message: "What is the intern's name?",
         name: "internName",
-        validate: validation, 
+        validate: validation,
     },
     {
         type: "input",
@@ -86,34 +85,41 @@ const internQuestions = [
     },
 ]
 
-const menu = [
-    {
-        type: "list",
-        message: "Choose option",
-        name: "team-member",
-        choices: ["engineer", "intern", "finish building my team"]
-    },
-]
+const menuQuestion =
+{
+    type: "list",
+    message: "Choose option",
+    name: "teamMember",
+    choices: ["add a engineer", "add a intern", "finish building my team"]
+}
+
 
 //Function to build team
 function buildTeam() {
     inquirer
-        .prompt(managerQuestions)
-        inquirer
-            .prompt(menu)
-            if (response === "engineer") {
-                inquirer
-                    .prompt(engineerQuestions)
-            } else {
-                if (response === "intern") {
-                    inquirer
-                    .prompt(internQuestions)
-                } else {
-                    init()
-                }
-            }
+        .prompt(managerQuestions).then((answers) => {
+
+
+            menu()
+        })
+
 }
 
+function menu() {
+    inquirer.prompt(menuQuestion).then((answer) => {
+        switch (answer.teamMember) {
+            case 'add a engineer':
+            console.log("chose an engineer");
+                break;
+            case 'add a intern':
+                console.log("chose an intern");
+                break;
+            default:
+                console.log("chose to finish");
+                break;
+        }
+    })
+}
 
 // // Function to write HTML file
 // function writeToFile(fileName, data) {
